@@ -1,0 +1,51 @@
+{
+  "id": "default",
+  "version": "2026.01",
+  "phases": [
+    {
+      "name": "baseline",
+      "rules": [
+        {
+          "id": "check_quantity",
+          "phase": "baseline",
+          "condition": {
+            "some": [
+              { "var": "items" },
+              {
+                ">": [
+                  { "var": "amount" },
+                  10
+                ]
+              }
+            ]
+          },
+          "actions": [
+            {
+              "type": "flag_violation",
+              "params": {
+                "code": "ITEM_QTY_LIMIT",
+                "message": "Item quantity greater than 10"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "totals",
+      "rules": [
+        {
+          "id": "compute_totals",
+          "phase": "totals",
+          "condition": { "==": [1, 1] },
+          "actions": [
+            {
+              "type": "compute_totals",
+              "params": {}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
