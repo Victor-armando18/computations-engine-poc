@@ -1,0 +1,78 @@
+{
+  "id": "order-rules",
+  "version": "2026.01",
+  "phases": [
+    {
+      "name": "baseline",
+      "rules": [
+        {
+          "id": "compute-subtotal",
+          "phase": "baseline",
+          "priority": 1,
+          "enabled": true,
+          "actions": [
+            {
+              "type": "compute",
+              "target": "totals.subtotal",
+              "logic": {
+                "sum": [
+                  {
+                    "map": [
+                      { "var": ["items", []] },
+                      {
+                        "*": [
+                          { "var": ["quantity"] },
+                          { "var": ["price"] }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "compute-total",
+          "phase": "baseline",
+          "priority": 2,
+          "enabled": true,
+          "actions": [
+            {
+              "type": "compute",
+              "target": "totals.total",
+              "logic": { "var": ["totals.subtotal"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "guards",
+      "rules": [
+        {
+          "id": "guard-item-quantity",
+          "phase": "guards",
+          "priority": 1,
+          "enabled": true,
+          "actions": [
+            {
+              "type": "validate",
+              "logic": {
+                "some": [
+                  { "var": ["items", []] },
+                  { ">": [{ "var": ["quantity"] }, 10] }
+                ]
+              },
+              "params": {
+                "field": "items",
+                "code": "ITEM_QTY_EXCEEDED",
+                "message": "One or more items exceed the maximum quantity of 10"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

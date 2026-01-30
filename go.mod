@@ -1,12 +1,12 @@
 module github.com/Victor-armando18/computations-engine-poc
 
-go 1.24.0
+go 1.24.2
 
 require (
+	github.com/dolphin-sistemas/computations-engine v0.0.0-20260128133927-939fc8d7b324
 	github.com/evanphx/json-patch/v5 v5.9.11
 	github.com/labstack/echo/v4 v4.15.0
 	github.com/stretchr/testify v1.11.1
-// github.com/dolphin-sistemas/computations-engine v0.0.0
 )
 
 require (
@@ -16,7 +16,6 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dolphin-sistemas/computations-engine v0.0.0-20260126201333-1e0e9150fb13
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
