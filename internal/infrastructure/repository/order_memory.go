@@ -1,18 +1,19 @@
 package repository
 
 import (
+	"context"
 	"sync"
 
 	"github.com/Victor-armando18/computations-engine-poc/internal/domain/order"
 )
 
-type OrderMemoryRepository struct {
+type MemoryRepository struct {
 	mu     sync.RWMutex
 	orders map[string]order.Order
 }
 
-func NewOrderMemoryRepository() *OrderMemoryRepository {
-	return &OrderMemoryRepository{
+func NewMemoryRepository() *MemoryRepository {
+	return &MemoryRepository{
 		orders: map[string]order.Order{
 			"123": {
 				ID: "123",
@@ -20,19 +21,15 @@ func NewOrderMemoryRepository() *OrderMemoryRepository {
 					{SKU: "ITEM-001", Quantity: 2, Price: 50},
 					{SKU: "ITEM-002", Quantity: 1, Price: 100},
 				},
-				Totals: order.Totals{
-					SubTotal: 200,
-					Total:    200,
-				},
+				Totals: order.Totals{SubTotal: 200, Total: 200},
 			},
 		},
 	}
 }
 
-func (r *OrderMemoryRepository) Get(id string) (order.Order, error) {
+func (r *MemoryRepository) Get(_ context.Context, id string) (order.Order, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
-
 	o, ok := r.orders[id]
 	if !ok {
 		return order.Order{}, order.ErrOrderNotFound
@@ -40,7 +37,7 @@ func (r *OrderMemoryRepository) Get(id string) (order.Order, error) {
 	return o, nil
 }
 
-func (r *OrderMemoryRepository) Save(o order.Order) error {
+func (r *MemoryRepository) Save(_ context.Context, o order.Order) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.orders[o.ID] = o

@@ -2,11 +2,8 @@ package http
 
 import "github.com/labstack/echo/v4"
 
-func Register(e *echo.Echo, h *OrderHandler) {
-	e.POST("/orders/:id/patch", func(c echo.Context) error {
-		return h.handle(c, h.Patch.Execute)
-	})
-	e.POST("/orders/:id/validate", func(c echo.Context) error {
-		return h.handle(c, h.Validate.Execute)
-	})
+func RegisterRoutes(e *echo.Echo, h *OrderHandler) {
+	// Endpoints exigidos na Task
+	e.POST("/orders/:id/patch", h.HandlePatch)
+	e.POST("/orders/:id/validate", h.HandleValidate)
 }

@@ -1,12 +1,10 @@
 package order
 
-import "github.com/dolphin-sistemas/computations-engine/core"
+import (
+	"context"
 
-type Order struct {
-	ID     string      `json:"id"`
-	Items  []OrderItem `json:"items"`
-	Totals Totals      `json:"totals"`
-}
+	"github.com/dolphin-sistemas/computations-engine/core"
+)
 
 type OrderItem struct {
 	SKU      string  `json:"sku"`
@@ -17,6 +15,12 @@ type OrderItem struct {
 type Totals struct {
 	SubTotal float64 `json:"subTotal"`
 	Total    float64 `json:"total"`
+}
+
+type Order struct {
+	ID     string      `json:"id"`
+	Items  []OrderItem `json:"items"`
+	Totals Totals      `json:"totals"`
 }
 
 type ExecutionMeta struct {
@@ -34,4 +38,13 @@ type RulesResult struct {
 	Violations    []core.Violation `json:"violations"`
 	RulesVersion  string           `json:"rulesVersion"`
 	CorrelationID string           `json:"correlationId"`
+}
+
+type Repository interface {
+	Get(ctx context.Context, id string) (Order, error)
+	Save(ctx context.Context, o Order) error
+}
+
+type RuleEngine interface {
+	Run(ctx context.Context, o Order, meta ExecutionMeta) (RulesResult, error)
 }
